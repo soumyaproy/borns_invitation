@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>বর্ণজিৎ ও অনুরিমা — নিমন্ত্রণ</title>
+<link rel="icon" href="https://i.postimg.cc/Y9s7yvJX/91f3ce7e79a68609e33bc8f6dbe55827.png">
+<style>
+  :root{
+    --accent:#b31b1b;
+    --muted:#6b6b6b;
+    --card-bg: rgba(255,255,255,0.88);
+    --card-img-bg: url('https://i.postimg.cc/5yLhMzbg/abstract-luxury-beautiful-decorative-background-1055-7800.avif');
+    --maxw:760px;
+  }
+
+  /* Base */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: 'Noto Sans Bengali', 'Noto Serif Bengali', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    /* fixed background (top aligned so head isn't cut) */
+    background-image: url('https://i.postimg.cc/43WFC5cM/12X6-Card-copy-(1).jpg');
+    background-size: cover;             /* cover but we'll anchor to top so head stays visible */
+    background-position: top center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    filter: brightness(0.88);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    color:#111;
+    display:flex;
+    justify-content:center;
+    padding:18px 12px;
+  }
+
+  .site {
+    width:100%;
+    max-width:var(--maxw);
+  }
+
+  /* Door overlay (uses your split image) */
+  #doorContainer {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display:flex;
+    pointer-events: auto;
+    background:#111; /* dark background while door animates */
+  }
+  .door-panel {
+    width:50%;
+    height:100%;
+    background-image: url('https://i.postimg.cc/Dz9pfDS1/Barno-1st-copy-(1).jpg');
+    background-size: 200% 100%;
+    background-repeat:no-repeat;
+    transition: transform 1.1s cubic-bezier(.2,.9,.2,1);
+    will-change: transform;
+  }
+  #doorLeft{ background-position:left center; transform-origin:left; }
+  #doorRight{ background-position:right center; transform-origin:right; }
+  .door-open-left{ transform: perspective(900px) rotateY(-92deg); }
+  .door-open-right{ transform: perspective(900px) rotateY(92deg); }
+
+  /* Multi-flower drop (multiple emoji types) */
+  .falling-flower {
+    position: fixed;
+    top: -8vh;
+    z-index: 9999;
+    pointer-events:none;
+    will-change: transform, opacity;
+    animation-timing-function: linear;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0.7; }
+  }
+
+  /* Floating Bride/Groom icons (hidden until door opens) */
+  .floating-icon {
+    position: fixed;
+    top: 44%;
+    width: 92px;
+    height: auto;
+    z-index: 10010;
+    cursor: pointer;
+    display:none; /* appear after door opens */
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    user-select:none;
+    transform-origin:center;
+    animation: floaty 3s ease-in-out infinite;
+  }
+  @keyframes floaty { 0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)} }
+
+  .floating-icon .icon-img{ width:92px; height:92px; display:block; object-fit:contain; border-radius:8px; background:rgba(255,255,255,0.92); padding:6px; box-shadow:0 8px 24px rgba(0,0,0,0.18); }
+  .floating-icon .icon-label{ font-size:13px; margin-top:6px; font-weight:700; color:#fff; background:rgba(179,26,26,0.95); padding:4px 8px; border-radius:999px; display:inline-block; }
+
+  .bride { right:12px; }
+  .groom { left:12px; }
+
+  /* Scroll-card (red scroll) */
+  .scroll-card {
+    position: fixed;
+    top: 18%;
+    width: 74%;
+    max-width: 320px;
+    z-index: 10020;
+    display:none;
+    animation: slideIn 380ms ease-out;
+  }
+  .scroll-left{ left:10px; }
+  .scroll-right{ right:10px; }
+  .scroll-top, .scroll-bottom { height:28px; background-size:contain; background-repeat:no-repeat; background-position:center; }
+  /* white images not required; using simple colored caps here */
+  .scroll-top{ background-image: linear-gradient(90deg, transparent, rgba(0,0,0,0.06)); height:16px; }
+  .scroll-bottom{ background-image: linear-gradient(90deg, transparent, rgba(0,0,0,0.06)); height:16px; }
+  .scroll-body {
+    background: linear-gradient(180deg,#ad1b1b,#8b1414);
+    padding:14px;
+    color:#fffbe6;
+    font-weight:600;
+    border-left:4px solid #6a0f0f;
+    border-right:4px solid #6a0f0f;
+    text-align:center;
+    line-height:1.5;
+    border-radius:8px;
+  }
+  @keyframes slideIn { from{ transform: translateY(20px); opacity:0 } to{ transform: translateY(0); opacity:1 } }
+
+  /* CONTENT area */
+  .content {
+    padding-top:8px;
+    padding-bottom:60px;
+  }
+
+  /* Page card style (rounded, shadow). Page 1 will have internal scroll */
+  .page-card {
+    background: var(--card-bg);
+    border-radius:16px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+    margin: 12px 6px;
+    overflow: hidden;
+  }
+
+  /* Page-1: image container with internal scroll so image doesn't get cut */
+  .page-image-wrap {
+    height: 72vh;            /* tall but fits mobile; user can scroll inside card */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #0000;
+  }
+  .page-image-wrap img {
+    width:100%;
+    height:auto;            /* ensure image not cropped */
+    display:block;
+  }
+
+  /* Page 2 red background */
+.text-card{background:#b31b1b; color:#fff; padding:18px; text-align:left; font-size:18px; line-height:1.7; border-radius:16px;}
+.text-card b{display:block; color:#fff; margin-bottom:6px; font-weight:700;}
+
+  /* Map placeholder card */
+  .map-card {
+    height: 44vh;
+    border-radius: 12px;
+    overflow:hidden;
+    background: #f7f5f3;
+  }
+  .map-placeholder {
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#555; font-weight:700;
+  }
+
+  /* small responsive tweak */
+  @media(min-width:720px){
+    .page-image-wrap{ height:64vh }
+    .floating-icon{ width:108px }
+    .floating-icon .icon-img{ width:108px; height:108px; }
+  }
+
+  /* utility */
+  .center { text-align:center }
+  a { color: inherit }
+</style>
+</head>
+<body>
+  <div class="site">
+
+    <!-- Door overlay (split door uses the image split) -->
+    <div id="doorContainer" aria-hidden="true">
+      <div id="doorLeft" class="door-panel"></div>
+      <div id="doorRight" class="door-panel"></div>
+    </div>
+
+    <!-- FLOWERS will be appended via JS during/after door opens -->
+
+    <!-- Floating Bride & Groom icons (hidden initially, appear after door opens) -->
+    <div id="groomIcon" class="floating-icon groom" role="button" aria-label="পাত্র পরিচয়">
+      <img src="https://i.postimg.cc/43yn4LDv/bong-groom.png" class="icon-img" alt="পাত্র">
+      <div class="icon-label">পাত্র পরিচয়</div>
+    </div>
+
+    <div id="brideIcon" class="floating-icon bride" role="button" aria-label="পাত্রী পরিচয়">
+      <div class="icon-label">পাত্রী পরিচয়</div>
+      <img src="https://i.postimg.cc/yNDYCJRm/bong-bride.png" class="icon-img" alt="পাত্রী">
+    </div>
+
+    <!-- Scroll cards (red) -->
+    <div id="groomCard" class="scroll-card scroll-left" role="dialog" aria-hidden="true">
+      <div class="scroll-top"></div>
+      <div class="scroll-body">
+        <div>পাত্র পরিচয়</div>
+        <div style="margin-top:8px; font-weight:600; font-size:15px">কল্যাণীয় বর্ণজিৎ শর্মা (জ্যেষ্ঠ)</div>
+        <div style="margin-top:6px; font-size:14px">পিতা: শ্রী বিশ্বজিৎ শর্মা<br>মাতা: শ্রীমতি জয়ন্তী শর্মা<br>ঠিকানা: পলাশীপাড়া, নদীয়া</div>
+      </div>
+      <div class="scroll-bottom"></div>
+    </div>
+
+    <div id="brideCard" class="scroll-card scroll-right" role="dialog" aria-hidden="true">
+      <div class="scroll-top"></div>
+      <div class="scroll-body">
+        <div>পাত্রী পরিচয়</div>
+        <div style="margin-top:8px; font-weight:600; font-size:15px">কল্যানীয়া অনুরিমা বিশ্বাস (একমাত্র)</div>
+        <div style="margin-top:6px; font-size:14px">পিতা: শ্রী গোপাল বিশ্বাস<br>মাতা: শ্রীমতি প্রথা বিশ্বাস<br>ঠিকানা: পুরাতন জিতপুর, তেহট্ট, নদীয়া</div>
+      </div>
+      <div class="scroll-bottom"></div>
+    </div>
+
+    <!-- Main content (pages) -->
+    <main class="content" id="content">
+
+      <!-- Page 1: IMAGE inside rounded card with internal scroll (user can scroll inside to view full image) -->
+      <section class="page-card" aria-label="প্রথম পৃষ্ঠা">
+        <img src="https://i.postimg.cc/g0cLXy7j/A-Card-Barno-copy-(1).jpg"
+            alt="প্রথম পৃষ্ঠা — কার্ড ছবি"
+            style="width:100%; height:auto; display:block; border-radius:16px;">
+        </section>
+
+      <!-- Page 2: Dates & Venue (Bengali) -->
+      <section class="page-card" aria-label="তারিখ ও স্থান">
+        <div class="text-card">
+          <div style="text-align:center; font-weight:800; font-size:18px; margin-bottom:12px">স্মারকলিপি</div>
+
+          <div style="margin-bottom:12px">
+            <b>গায়ে হলুদ:</b>
+            ১৭ ই অগ্রহায়ণ ১৪৩২ (ইং ০৪/১২/২০২৫), বৃহস্পতিবার
+          </div>
+
+          <div style="margin-bottom:12px">
+            <b>শুভ বিবাহ:</b>
+            ১৮ই অগ্রহায়ণ ১৪৩২ (ইং ০৫/১২/২০২৫), শুক্রবার
+          </div>
+
+          <div style="margin-bottom:12px">
+            <b>প্রীতিভোজ:</b>
+            ২১ শে অগ্রহায়ণ ১৪৩২ (ইং ০৮/১২/২০২৫), সোমবার
+          </div>
+
+          <div>
+            <b>স্থান:</b>
+            শ্রীদুর্গা লজ, পলাশীপাড়া, নদীয়া
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 3: Map placeholder -->
+      <section class="page-card" aria-label="লোকেশন মাপ">
+        <div class="map-card">
+          <!-- Replace the src below with a Google Maps embed URL when ready -->
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7301.469784459295!2d88.45037!3d23.792453!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f96afa8c102cc9%3A0xf5ff33e706897fcd!2sSridurga%20Lodge!5e0!3m2!1sen!2sin!4v1763773047688!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+<script>
+  // Door opening - split image doors
+  function openDoors() {
+    const left = document.getElementById('doorLeft');
+    const right = document.getElementById('doorRight');
+    // add class to rotate
+    left.classList.add('door-open-left');
+    right.classList.add('door-open-right');
+
+    // after doors open -> hide the door container and enable icons & flowers
+    setTimeout(() => {
+      const container = document.getElementById('doorContainer');
+      container.style.display = 'none';
+      showFlowers();         // begin flower drops
+      revealIcons();         // show bride/groom icons
+    }, 1200); // close timing matches CSS duration
+  }
+
+  // Show bride/groom icons (display block)
+  function revealIcons() {
+    const groom = document.getElementById('groomIcon');
+    const bride = document.getElementById('brideIcon');
+    groom.style.display = 'flex';
+    bride.style.display = 'flex';
+
+    // small fade-in
+    groom.style.opacity = 0; bride.style.opacity = 0;
+    setTimeout(()=> { groom.style.transition = 'opacity 360ms'; groom.style.opacity = 1; }, 80);
+    setTimeout(()=> { bride.style.transition = 'opacity 360ms'; bride.style.opacity = 1; }, 160);
+  }
+
+  // Flower creation (multiple types)
+  const flowerTypes = ['💐','🌸','🪷','🏵️','🌹','🌺','🌻','🌼','🌷'];
+  let flowerInterval = null;
+  function createOneFlower() {
+    const f = document.createElement('div');
+    f.className = 'falling-flower';
+    f.textContent = flowerTypes[Math.floor(Math.random()*flowerTypes.length)];
+    f.style.left = (8 + Math.random()*84) + 'vw';
+    f.style.fontSize = (20 + Math.random()*28) + 'px';
+    const dur = 3 + Math.random()*4;
+    f.style.animation = `fall ${dur}s linear forwards`;
+    document.body.appendChild(f);
+    // remove after animation
+    setTimeout(()=> { try{ f.remove(); } catch(e){} }, (dur+0.4)*1000);
+  }
+  function showFlowers(){
+    // create a few initial burst then interval
+    for(let i=0;i<6;i++){ setTimeout(createOneFlower, i*120); }
+    flowerInterval = setInterval(createOneFlower, 420);
+    // stop after long time (optional) - keep it running normally; you can stop by clearInterval(flowerInterval)
+  }
+
+  // Initiate door open on load (small delay so browser paints)
+  window.addEventListener('load', ()=> {
+    setTimeout(openDoors, 420);
+  });
+
+  // Toggle scroll-cards on icon click and close on card click
+  function toggleCard(id) {
+    const card = document.getElementById(id);
+    const other = id === 'brideCard' ? document.getElementById('groomCard') : document.getElementById('brideCard');
+
+    // hide other
+    other.style.display = 'none';
+    other.setAttribute('aria-hidden','true');
+
+    // toggle this
+    if (card.style.display === 'block') {
+      // close
+      card.style.opacity = 1;
+      card.style.transition = 'opacity 200ms';
+      card.style.opacity = 0;
+      setTimeout(()=> { card.style.display = 'none'; card.setAttribute('aria-hidden','true'); }, 260);
+    } else {
+      card.style.display = 'block';
+      card.style.opacity = 0;
+      card.setAttribute('aria-hidden','false');
+      setTimeout(()=> { card.style.transition = 'opacity 260ms'; card.style.opacity = 1; }, 12);
+    }
+  }
+
+  // Make icons work reliably on mobile (touch)
+  ['bride', 'groom'].forEach(role => {
+    const icon = document.querySelector('.' + role);
+    icon.addEventListener('click', ()=> toggleCard(role+'Card'));
+    icon.addEventListener('touchstart', e => { e.preventDefault(); toggleCard(role+'Card'); }, {passive:false});
+  });
+
+  // click handlers on icons
+  document.getElementById('groomIcon').addEventListener('click', ()=> toggleCard('groomCard'));
+  document.getElementById('brideIcon').addEventListener('click', ()=> toggleCard('brideCard'));
+
+  // close card when tapping on its body (as requested)
+  document.getElementById('groomCard').addEventListener('click', ()=> {
+    toggleCard('groomCard');
+  });
+  document.getElementById('brideCard').addEventListener('click', ()=> {
+    toggleCard('brideCard');
+  });
+
+  // prevent icons from causing page scroll on mobile when tapping
+  ['touchstart','touchend'].forEach(evt => {
+    document.getElementById('groomIcon').addEventListener(evt, e => e.preventDefault(), {passive:false});
+    document.getElementById('brideIcon').addEventListener(evt, e => e.preventDefault(), {passive:false});
+  });
+
+  // Map iframe sizing note: mapFrame is already responsive; replace src with actual embed when ready.
+</script>
+</body>
+</html>
